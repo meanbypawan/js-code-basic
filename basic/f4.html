@@ -1,0 +1,14 @@
+<script>
+    function f1(message,callback,callback2){
+       document.write("<br>"+message);
+       callback();
+       callback2();
+    }
+
+    var x = function(){
+        document.write("<br>Very good mornign Sir.....");
+    };
+    f1("Good Morning Dear Students...",x,function(){
+        document.write("<br>Callback2 called.....");
+    })
+</script>

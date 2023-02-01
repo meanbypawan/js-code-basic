@@ -1,0 +1,23 @@
+<script>
+    var x = [10,21,30,91,80,91,51,40,0];
+    
+    /*
+    x = x.map(function(element){
+      return element+1;
+    });
+    */
+    //x = x.filter(function(element){return element%2==1});
+    //x = x.filter((element)=> element%2==0)
+    //var index = x.findIndex(element=>element==91);
+    //var totalEven = x.filter(element=>element%2==0).length;
+    //document.write(totalEven);
+    
+    var result = x.find(element=>element == 0);
+    
+    if(result || result==0)
+      document.write("Element Found");
+    else
+      document.write("Element Not Found"); 
+      
+      
+</script>

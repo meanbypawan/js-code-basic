@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .backgroundImage {
+            background-image: url('images/background.jpeg');
+            width: 100%;
+            height: 100vh;
+            background-size: cover;
+        }
+
+        .form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 5px 5px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="backgroundImage">
+        <div class="row">
+            <div class=" form col-6 m-auto bg-light p-5">
+                <form>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input onkeyup="validateName()" id="name" type="text" class="form-control" />
+                        <small id="nameError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile</label>
+                        <input onkeyup="validateMobile()" id="mobile" type="text" class="form-control" />
+                        <small id="mobileError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Pasword</label>
+                        <div class="input-group">
+                        <input onkeyup="validatePassword()" id="password" type="password" class="form-control" />
+                        <div class="input-group-append">
+                            <span style="cursor:pointer;" id="showHidePassword" onclick="togglePassword()" class="input-group-text">Show</span>
+                        </div>
+                        </div>
+                        <small id="passwordError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm password</label>
+                        <input onkeyup="matchPassword()" type="password" class="form-control" id="confirm-password"/>
+                        <small id="confirmPasswordError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input onkeyup="validateEmail()" type="text" id="email" class="form-control"/>
+                        <small id="emailError"></small>
+                    </div>
+                    <div class="form-group">
+                      <label>Qualification</label>
+                      <select id="qualification"  onchange="validateQualification()" class="form-control">
+                        <option value="0">select qualification</option>
+                        <option value="Under graduate">Under graduate</option>
+                        <option value="Graduate">Graduate</option>
+                        <option value="Post graduate">Post graduate</option>
+                        <option value="Doctorate">Doctorate</option>
+                      </select>
+                      <small id="qualificationError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label><br/>
+                        Male&nbsp;<input id="male" onchange="validateGender()" type="radio" name="gender"/>
+                        Female&nbsp;<input id="female" onchange="validateGender()" type="radio" name="gender"/>
+                        <br/>
+                        <small id="genderError"></small>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" onclick="return validateData()" class="btn btn-outline-danger">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function validateGender(){
+            var status = true;
+            var male = document.getElementById("male").checked;
+            var female = document.getElementById("female").checked;
+            var genderError = document.getElementById("genderError");
+            if(male == false && female == false){
+                status = false;
+                genderError.innerHTML = "please select gender";
+                genderError.style.color = "red";
+            }
+            else
+             genderError.innerHTML = "";
+            return status;
+        }
+        function validateQualification(){
+            var status = true;
+            var qualification = document.getElementById("qualification").value;
+            var qualificationError = document.getElementById("qualificationError");
+            if(qualification == "0"){
+              status = false;
+              qualificationError.innerHTML = "please select qualification";
+              qualificationError.style.color = "red";
+            }
+            else
+              qualificationError.innerHTML = "";
+            return status;
+        }
+        function validateEmail(){
+            var status  = true;
+            var email = document.getElementById("email").value;
+            var emailError = document.getElementById("emailError");
+            email = email.trim();
+            if(email.length == 0){
+                status = false;
+                emailError.innerHTML = "email is required";
+                emailError.style.color = "red";
+            }
+            else{
+               var atTheRateIndex =  email.indexOf('@');
+               var secondAtTheReateIndex = email.lastIndexOf('@');
+               var dotIndex = email.indexOf('.');
+               if(atTheRateIndex == -1){
+                  status = false;
+                  emailError.innerHTML = "Invalid email(@ missing)";
+                  emailError.style.color = "red";
+               }
+               else if(secondAtTheReateIndex != atTheRateIndex){
+                  status = false;
+                  emailError.innerHTML = "Invalid email";
+                  emailError.style.color = "red";
+               }
+               else if(dotIndex==-1){
+                 status = false;
+                 emailError.innerHTML = "Invalid email(. missing)";
+                 emailError.style.color = "red";
+               }
+               else{
+                 var stringAfterAtTheRate = email.substring(atTheRateIndex);
+                 var lastDotIndex =  stringAfterAtTheRate.indexOf(".");
+                 if(lastDotIndex==-1){
+                    status = false;
+                    emailError.innerHTML = "Invalid email(. missing in domain)";
+                    emailError.style.color = "red";
+                 }
+                 else{
+                    var inOrCom = stringAfterAtTheRate.substring(lastDotIndex+1);
+                    if(inOrCom.length<2){
+                        status = false;
+                        emailError.innerHTML = "Invalid email";
+                        emailError.style.color = "red";
+                    } 
+                    else{
+                    
+                    if(stringAfterAtTheRate.substring(1,lastDotIndex).length==0){
+                        status = false;
+                        emailError.innerHTML = "Invalid Email";
+                        emailError.style.color = "red";
+                    }
+                    else
+                       emailError.innerHTML = "";
+                   } 
+                }
+               }
+            }
+            return status;
+        }
+        function matchPassword(){
+            var status = true;
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm-password").value;
+            var confirmPasswordError = document.getElementById("confirmPasswordError");
+            if(password != confirmPassword){
+                status = false;
+                confirmPasswordError.innerHTML = "password not matched";
+                confirmPasswordError.style.color = "red"; 
+            }
+            else
+              confirmPasswordError.innerHTML = "";  
+            return status;
+        }
+        function togglePassword(){
+           var obj = document.getElementById("showHidePassword");
+           var password = document.getElementById("password");
+           if(obj.innerText == "Show"){
+            password.type = "text";
+            obj.innerHTML = "Hide";
+           }  
+           else{
+            password.type = "password";
+            obj.innerHTML = "Show";
+           }
+        }
+        function checkForAlphabate(data) {
+            var status = true;
+            for (index in data) {
+                if (!(isNaN(data[index]) || data[index] == ' ')) {
+                    status = false;
+                    break;
+                }
+            }
+            return status;
+        }
+        function checkForSpecificLetter(data,i,j){
+           for(index in data){
+                if(data[index]>=i && data[index]<=j)
+                  return true;
+            }
+            return false;
+        }
+        function checkForSpecialSymbol(data){
+            for(index in data){
+                if(data[index]=='@' || data[index]=='#' || data[index]=='$')
+                  return true;
+            }
+            return false;
+        }
+        function validatePassword(){
+            var status = true;
+            var password = document.getElementById("password").value;
+            var passwordError = document.getElementById("passwordError");
+            if(password.length==0){
+                status = false;
+                passwordError.innerHTML = "password is required";
+                passwordError.style.color = "red";
+            }
+            else if(password.length < 8){
+               status = false;
+               passwordError.innerHTML = "password must be at least 8 letter long.";
+               passwordError.style.color = "red";
+            }
+            else if(!checkForSpecificLetter(password,'A','Z')){
+                status = false;
+                passwordError.innerHTML = "password must have 1 uppercase letter";
+                passwordError.style.color = "red";
+            }
+            else if(!checkForSpecificLetter(password,'0','9')){
+                status = false;
+                passwordError.innerHTML = "password must have 1 digit";
+                passwordError.style.color = "red";
+            }
+            else if(!checkForSpecialSymbol(password)){
+                status = false;
+                passwordError.innerHTML = "password must have 1 special symbol($,#,@)";
+                passwordError.style.color = "red";
+            }
+            else
+              passwordError.innerHTML = "";
+            return status;
+        }
+        function validateMobile() {
+            var status = true;
+            var mobile = document.getElementById("mobile").value;
+            var mobileError = document.getElementById("mobileError");
+            mobile = mobile.trim();
+            if (mobile.length == 0) {
+                status = false;
+                mobileError.innerHTML = "please enter mobile number";
+                mobileError.style.color = "red";
+            }
+            else if (isNaN(mobile)) {
+                status = false;
+                mobileError.innerHTML = "Only digits are allowed";
+                mobileError.style.color = "red";
+            }
+            else if (mobile.length != 10) {
+                status = false;
+                mobileError.innerHTML = "Invalid mobile number";
+                mobileError.style.color = "red";
+            }
+            else
+                mobileError.innerHTML = "";
+            return status;
+        }
+        function validateName() {
+            var status = true;
+            var name = document.getElementById("name").value;
+            var nameError = document.getElementById("nameError");
+            name = name.trim();
+            if (name.length == 0) {
+                nameError.innerHTML = "Name is required";
+                nameError.style.color = "red";
+                status = false;
+            }
+            else if (!checkForAlphabate(name)) {
+                nameError.innerHTML = "Only alphabate are allowed";
+                nameError.style.color = "red";
+                status = false;
+            }
+            else
+                nameError.innerHTML = "";
+
+            return status;
+        }
+        function validateData() {
+            var nameStatus = validateName();
+            var mobileStatus = validateMobile();
+            var passwordStatus = validatePassword();
+            var confirmPasswordStatus = matchPassword();
+            var emailStatus = validateEmail();
+            var qualificationStatus = validateQualification();
+            var genderStatus = validateGender();
+            if (nameStatus && mobileStatus && passwordStatus && 
+            confirmPasswordStatus && emailStatus && 
+            qualificationStatus && genderStatus)
+                return true;
+            return false;
+        }
+    </script>
+</body>
+
+</html>

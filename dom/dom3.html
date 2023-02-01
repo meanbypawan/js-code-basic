@@ -1,0 +1,40 @@
+<html>
+  <body id="page">
+    <span onclick="changeTheme('dark')" style="cursor: pointer;">Dark</span>
+    <span onclick="changeTheme('light')" style="cursor: pointer;">Light</span>
+    <center>
+     <img id="main" src="images/teddy.jpeg" width="200px" height="200px"/>
+     <br/>
+     <br/>
+     <button onclick="changeImage(1)">+</button>
+     <button onclick="changeImage(2)">-</button>
+    </center>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Natus deserunt libero illum nam nisi suscipit magnam ducimus ad sequi illo excepturi, accusantium praesentium saepe quibusdam tenetur nemo vel temporibus, maiores sed! Consectetur in nam, laborum non excepturi totam vel explicabo consequatur vitae odit, numquam dignissimos possimus velit voluptatum nostrum placeat facere sunt ea? Corporis, hic soluta? Recusandae, doloremque fugiat voluptas accusamus sed amet laboriosam voluptate ullam provident ipsam eos ab cum suscipit, veritatis unde voluptates vero. Laborum quisquam dolorem obcaecati earum sint maxime odio corrupti. Molestiae ipsa totam possimus? Ea perferendis ipsa vitae nesciunt consectetur sapiente aliquam, ab aut reprehenderit.</p>
+    <script>
+        function changeImage(n){
+          var mainImage = document.getElementById("main");
+          if(n == 1){
+            mainImage.width += 10;
+            mainImage.height += 10;
+          }
+          else{
+            mainImage.width -= 10;
+            mainImage.height -= 10;
+          }
+        }
+        function changeTheme(themeType){
+           var bodyObject = document.getElementById("page");
+           if(themeType == 'dark'){
+             bodyObject.style.backgroundColor = 'black';
+             bodyObject.style.color= 'white';
+           }
+           else if(themeType =='light'){
+             bodyObject.style.backgroundColor = 'white';
+             bodyObject.style.color= 'black';
+            
+           }
+        }   
+    </script>
+
+</body>
+</html>

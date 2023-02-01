@@ -1,0 +1,24 @@
+<script>
+    // Callback
+    // Error callback
+    // Callback Hell
+    var additionWithEvenOdd = (a,b,callback)=>{
+        if(typeof(a)!="number" || typeof(b)!="number")
+          callback(new Error("Data is not Numeric.."));
+        else{
+            var c = a + b;
+            document.write("<br>Addition : "+c);
+            callback(null,c);
+        }
+
+    }
+
+    additionWithEvenOdd(20,5,(error,n)=>{
+       if(error)
+         document.write("<br><label style='color: red;'>"+error+"</label>");
+       else{
+          n%2 ? document.write("<br>Odd"): document.write("<br>Even..");
+       }
+           
+    });
+</script>

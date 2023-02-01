@@ -1,0 +1,24 @@
+<script>
+   var x = [
+    [10,20,30],
+    [40,50,60,70],
+    [80,90]
+   ];
+   x[1].splice(2,0,95);
+   x[0].push(45);
+   for(row of x){
+      for(element of row){
+        document.write(" "+element);
+      }
+      document.write("<br>");
+   }
+   /*
+   for(var rowIndex=0; rowIndex < x.length; rowIndex++){
+     for(var colIndex=0; colIndex < x[rowIndex].length; colIndex++){
+        document.write(x[rowIndex][colIndex]+"  ");
+     }
+     document.write("<br>");
+   }
+   */
+    
+</script>
