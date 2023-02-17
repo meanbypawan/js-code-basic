@@ -1,0 +1,42 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <button onclick="sendAjaxRequest()">Send Request</button>
+        <script>
+            function sendAjaxRequest(){
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("GET","https://jsonplaceholder.typicode.com/posts",true);
+                xhttp.send();
+
+                xhttp.onreadystatechange = function(){
+                    if(xhttp.readyState == 4){
+                       // "[{},{}]" ---> [{},{}]
+                       // "{data:[]}" ---> {data:[]} 
+                       var data = xhttp.responseText;
+                       data = JSON.parse(data);
+                       document.write("<table width='100%' border='1'>");
+                       document.write("<tr>");
+                       document.write("<td>UserId</td>");
+                       document.write("<td>Id</td>");
+                       document.write("<td>Title</td>");
+                       document.write("<td>Body</td>"); 
+                       document.write("<tr/>");  
+                       for(var element of data){
+                        document.write("<tr>");
+                        document.write("<td>"+element.userId+"</td>");
+                        document.write("<td>"+element.id+"</td>");
+                        document.write("<td>"+element.title+"</td>");
+                        document.write("<td>"+element.body+"</td>"); 
+                        document.write("<tr/>");  
+                        
+                       }
+                       document.write("</table>"); 
+                    }
+                }
+            }
+        </script>
+    </body>
+    
+</html>

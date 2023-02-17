@@ -1,0 +1,45 @@
+<html>
+    <head>
+
+    </head>
+    <body>
+        <button onclick="sendAjaxRequest()">Send Request</button>
+        <script>
+            function sendAjaxRequest(){
+                var xhttp = new XMLHttpRequest();
+                xhttp.open("GET","https://jsonplaceholder.typicode.com/users",true);
+                xhttp.send();
+
+                xhttp.onreadystatechange = function(){
+                    if(xhttp.readyState == 4){
+                       // "[{},{}]" ---> [{},{}]
+                       // "{data:[]}" ---> {data:[]} 
+                       var data = xhttp.responseText;
+                       data = JSON.parse(data);
+                       document.write("<table width='100%' border='1'>");
+                       document.write("<tr>");
+                       document.write("<td>Id</td>");
+                       document.write("<td>Name</td>");
+                       document.write("<td>Username</td>");
+                       document.write("<td>Email</td>");
+                       document.write("<td>Address</td>");
+                       document.write("<td>City</td>"); 
+                       document.write("<tr/>");  
+                       for(var element of data){
+                         document.write("<tr>");
+                         document.write("<td>"+element.id+"</td>");
+                         document.write("<td>"+element.name+"</td>");
+                         document.write("<td>"+element.username+"</td>");
+                         document.write("<td>"+element.email+"</td>");
+                         document.write("<td>"+element.address.street+","+element.address.suite+"</td>");
+                         document.write("<td>"+element.address.city+"</td>"); 
+                         document.write("<tr/>");
+                       }
+                       document.write("</table>"); 
+                    }
+                }
+            }
+        </script>
+    </body>
+    
+</html>
