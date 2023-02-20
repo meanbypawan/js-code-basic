@@ -1,0 +1,3 @@
+Node.Js is single threaded
+Node.Js is super fast
+Node.js is javascript runtime evviornment

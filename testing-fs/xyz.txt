@@ -1,0 +1,1 @@
+Node.Js is suitable for io-intensive application
