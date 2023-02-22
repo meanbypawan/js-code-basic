@@ -12,4 +12,4 @@ http.createServer((request,response)=>{
   }
 }).listen(3000,()=>{
     console.log("server starrted..");
-})
+});
