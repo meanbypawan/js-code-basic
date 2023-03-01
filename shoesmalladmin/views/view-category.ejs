@@ -46,7 +46,9 @@
                                 <td><%=index+1%></td>
                                     <td><%=category.categoryName%></td>
                                     <td>
+                                       <a href="/category/edit/<%=category.id%>"> 
                                         <button class="btn btn-outline-primary">Edit</button>
+                                       </a>
                                     </td>
                                     <td>
                                        <a href="/category/delete/<%=category.id%>" onclick="return confirm('Are you sure ?')"> 

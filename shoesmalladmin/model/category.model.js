@@ -65,4 +65,35 @@ export default class Category{
         })  
       });
     }
+
+    static findById(id){
+       return new Promise((resolve,reject)=>{
+          pool.getConnection((err,con)=>{
+            if(!err){
+               let sql = "select * from category where id = ?";
+               con.query(sql,[id],(err,result)=>{
+                  err ? reject(err) : resolve(result);
+                  con.release();
+               });
+            }
+            else
+              reject(err);
+          })       
+       });
+    }
+    update(){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                  let sql = "update category set categoryName = ? where id = ?";
+                  con.query(sql,[this.categoryName, this.id],(err,result)=>{
+                    err ? reject(err) : resolve(result);
+                    con.release();
+                  })
+                }
+                else
+                  reject(err);
+            });
+        });
+    }
 }

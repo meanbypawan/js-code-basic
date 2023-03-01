@@ -52,3 +52,29 @@ export const remove = (request,response,next)=>{
     console.log(err);
   });
 }
+
+export const edit = (request, response, next)=>{
+  let categoryId = request.params.id;
+  Category.findById(categoryId)
+  .then(result=>{
+    if(result.length)
+      return response.render("edit-category.ejs",{
+        currentUser: request.session.user.currentUser,
+        category: result[0]});
+  })
+  .catch(err=>{
+    console.log(err);
+  });
+}
+ export const update = (request,response,next)=>{
+   let {id,categoryName} = request.body;
+   let category  = new Category(id,categoryName);
+   category.update()
+   .then(result=>{
+      return response.redirect("/category/view");
+   }).catch(err=>{
+    console.log(err);
+   });
+ }
+
+

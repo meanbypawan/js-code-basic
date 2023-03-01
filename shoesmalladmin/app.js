@@ -7,6 +7,8 @@ import session from "express-session";
 import IndexRouter from "./routes/index.route.js";
 import AdminRouter from './routes/admin.route.js';
 import CategoryRouter from './routes/category.route.js';
+import ProductRouter from './routes/product.route.js';
+
 const app = express();
 
 app.set("view engine","ejs");
@@ -26,6 +28,7 @@ app.use("/",IndexRouter);
 // http://localhost:3000/admin/
 app.use("/admin",AdminRouter);
 app.use("/category",CategoryRouter);
+app.use("/product",ProductRouter);
 app.listen(3000,()=>{
     console.log("Server Started...");
 })
