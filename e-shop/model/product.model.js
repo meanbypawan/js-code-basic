@@ -31,4 +31,34 @@ export default class Product{
            });           
         });
     }
+    static getList(){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                  let sql = "select * from product";
+                  con.query(sql,(err,result)=>{
+                    err ? reject(err) : resolve(result);
+                    con.release();
+                  })
+                }
+                else
+                  reject(err);
+            });
+        });
+    }
+    static findById(id){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+                if(!err){
+                  let sql = "select * from product where id = ?";
+                  con.query(sql,[id],(err,result)=>{
+                    err ? reject(err) : resolve(result);
+                    con.release();
+                  })
+                }
+                else
+                  reject(err);
+            });
+        });
+    }
 }

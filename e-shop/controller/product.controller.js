@@ -43,7 +43,31 @@ export const saveProduct = async (request,response,next)=>{
   console.log("data saved..");
 }
 
+export const view = (request,response,next)=>{
+   Product.getList()
+   .then(result=>{
+      return response.render("view-product.ejs",{
+        currentUser: request.session.user.currentUser,
+        productList: result
+      })
+   })
+   .catch(err=>{
+    console.log(err);
+   });
+}
 
-
+export const viewDescription = (request,response,next)=>{
+  let id = request.params.productId;
+  Product.findById(id)
+  .then(result=>{
+    return response.render("product-description.ejs",{
+      currentUser: request.session.user.currentUser,
+      product: result[0]
+    });
+  })
+  .catch(err=>{
+    console.log(err);
+  });
+}
 
 
