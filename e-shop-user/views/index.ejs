@@ -65,9 +65,15 @@
                       </p>
                       <h3 style="cursor:pointer;" class="text-center mt-2 mb-3 text-primary">View description</h3>
                       <div class="text-center">
-                      <a href="/cart/add-to-cart">
+                      <%if(currentUser){%>  
+                      <a onclick="addInToCart('<%=currentUser.id*1+1543%>','<%=product.id*1 + 2567%>')">
                         <button style="width:80%;" class="btn btn-outline-warning mb-3">Add To Cart</button>
                       </a>
+                      <%}else{%>
+                        <a href="/cart/add-to-cart/''/''">
+                           <button style="width:80%;" class="btn btn-outline-warning mb-3">Add To Cart</button>
+                         </a>
+                        <%}%>  
                      </div>
                      </div>
                   </div>
@@ -79,6 +85,19 @@
       <%-include('__footer.ejs')%>
       
       <%-include('__externalscriptlink.ejs')%>
+      <script>
+         function addInToCart(userId, productId){
+           var xhttp = new XMLHttpRequest();
+           xhttp.open("GET","/cart/add-to-cart/"+userId+"/"+productId,true);
+           xhttp.send();
+           xhttp.onreadystatechange = function(){
+             if(xhttp.readyState == 4){
+               let data = JSON.parse(xhttp.responseText);
+               window.alert(data.message);
+             }
+           }
+         }
+      </script>
    </body>
 </html>
 

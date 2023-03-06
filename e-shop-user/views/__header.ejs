@@ -45,7 +45,10 @@
              <div class="row d_flex">
                 <div class="col-md-4">
                    <ul class="conta_icon d_none1">
-                      <li><a href="#"><img src="images/email.png" alt="#"/> demo@gmail.com</a> </li>
+                      <%
+                        let email = currentUser ? currentUser.email : "";
+                      %>
+                      <li><a href="#"><img src="images/email.png" alt="#"/><%=email%></a> </li>
                    </ul>
                 </div>
                 <div class="col-md-4">
@@ -76,12 +79,18 @@
                             <li class="nav-item">
                                <a class="nav-link" href="products.html">Products</a>
                             </li>
+                            <%if(currentUser){%>
+                              <li class="nav-item">
+                                 <a class="nav-link" href="/signout">Sign Out</a>
+                              </li>
+                            <%}else{%>  
                             <li class="nav-item">
-                               <a class="nav-link" href="fashion.html">SignIn</a>
+                               <a class="nav-link" href="/signin">SignIn</a>
                             </li>
                             <li class="nav-item">
                                <a class="nav-link" href="news.html">Signup</a>
                             </li>
+                            <%}%>
                          </ul>
                       </div>
                    </nav>
