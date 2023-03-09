@@ -37,4 +37,19 @@ export default class Cart{
             })
          });
     }
+    static getCartItem(userId){
+      return new Promise((resolve,reject)=>{
+        pool.getConnection((err,con)=>{
+          if(!err){
+            let sql = "select product.id,product.title,product.price,product.discountPercentage,product.stock,product.brand,product.thumbnail from product inner join cart on product.id = cart.productId where cart.userId = ?";
+            con.query(sql,[userId],(err,result)=>{
+              con.release();
+              err ? reject(err) : resolve(result);
+            })
+          }
+          else
+           reject(err);
+        })       
+      })
+    }
 }
