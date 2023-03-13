@@ -27,4 +27,20 @@ export default class OrderDetails{
            });
         });
     }
+
+    static getOrderByUserId(userId){
+        return new Promise((resolve,reject)=>{
+            pool.getConnection((err,con)=>{
+               if(!err){
+                 let sql = "select * from order_details where userId = ?";
+                 con.query(sql,[userId],(err,result)=>{
+                     con.release();
+                     err ? reject(err) : resolve(result);
+                 })
+               }
+               else
+                 reject(err);
+            });
+         });
+    }
 }

@@ -1,3 +1,4 @@
+import Cart from "../model/cart.model.js";
 import OrderItems from "../model/order-item.mode.js";
 import OrderDetails from "../model/order.model.js";
 export const save = (request,response,next)=>{
@@ -16,15 +17,40 @@ export const save = (request,response,next)=>{
   .then(result=>{
      OrderItems.save(cartItems,orderId)
      .then(result=>{
-        // Remove all item form cart of this current user
-        // Then fetch all order of this current user
-        // Then render order-history page
-        return response.render("order-history.ejs",{
-         currentUser: request.session.user
-       });
+        Cart.clearCart(userId)
+        .then(result=>{
+         OrderDetails.getOrderByUserId(userId)
+         .then(result=>{
+           console.log(result);
+           return response.render("order-history.ejs",{
+            currentUser: request.session.user,
+            orderHistory: result
+           });
+           
+         })
+         .catch(err=>{
+          console.log(err);
+         }); 
+         
+        }).catch(err=>{
+          console.log(err);
+        })
      }).catch(err=>{
         console.log(err);
      });    
   })
   .catch();
+}
+
+export const history = (request,response,next)=>{
+  let userId = request.session.user.id;
+  
+  OrderDetails.getOrderByUserId(userId).then(result=>{
+    return response.render("order-history.ejs",{
+      currentUser: request.session.user,
+      orderHistory: result
+     });
+  }).catch(err=>{
+    console.log(err);
+  })
 }

@@ -10,7 +10,30 @@
           
       <div id="project" class="project">
          <div class="container">
-                      
+             <table class="table">
+               <thead>
+                  <tr>
+                     <th>OrderId</th>
+                     <th>Date</th>
+                     <th>Bill Amount</th>
+                     <th>Contact Person</th>
+                     <th>Address</th>
+                     <th>Status</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  <%orderHistory.map((order, index)=>{%>
+                     <tr>
+                        <td><a href="#" style="color: blue;"><%=order.id%></a></td>
+                        <td><%=order.date%></td>
+                        <td><%=order.billAmount%></td>
+                        <td><%=order.contactPerson%></td>
+                        <td><%=order.deliveryAddress%></td>
+                        <td><%=order.status%></td>
+                     </tr>
+                  <%})%>
+               </tbody>
+             </table>         
          </div>
       </div>
       <%-include('__footer.ejs')%>

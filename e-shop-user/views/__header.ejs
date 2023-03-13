@@ -77,9 +77,12 @@
                                <a class="nav-link" href="index.html">Home</a>
                             </li>
                             <li class="nav-item">
-                               <a class="nav-link" href="products.html">Products</a>
+                               <a class="nav-link" href="/product/all">Products</a>
                             </li>
                             <%if(currentUser){%>
+                              <li class="nav-item">
+                                 <a class="nav-link" href="/order/history">Orders</a>
+                              </li>
                               <li class="nav-item">
                                  <a class="nav-link" href="/signout">Sign Out</a>
                               </li>
@@ -97,8 +100,8 @@
                 </div>
                 <div class="col-md-4">
                    <div class="search">
-                      <form action="/action_page.php">
-                         <input class="form_sea" type="text" placeholder="Search" name="search">
+                      <form>
+                         <input onkeyup="searchProduct(this.value)" class="form_sea" type="text" placeholder="Search" name="search">
                          <button type="submit" class="seach_icon"><i class="fa fa-search"></i></button>
                       </form>
                    </div>
@@ -108,3 +111,42 @@
        </div>
     </div>
  </header>
+<script>
+   function searchProduct(keyword){
+     var xhttp = new XMLHttpRequest();
+     xhttp.open("GET","/product/product-search/"+keyword,true);
+     xhttp.send();
+     xhttp.onreadystatechange = function(){
+      if(xhttp.readyState == 4){
+         let data = xhttp.responseText;
+         data = JSON.parse(data);
+         let productView = "";
+         for(let product of data.productList){
+            let priceString = '';
+            if(product.discountPercentage){
+               priceString = ' <del class="text-danger">'+product.price+'</del>'+
+                           '<span class="text-success">'+Math.round(product.price-((product.price*product.discountPercentage)/100))+' Rs.</span>';
+                          
+            }
+            else{
+              priceString =  '<span class="text-success">'+product.price+' Rs.</span>'
+            }
+             productView = productView+'<div style="height: 450px;" class="col-md-3 p-3">'+
+                      '<div style=" box-shadow: 5px 5px 5px;">'+
+                        '<img src="'+product.thumbnail+'" style="width:100%; height: 200px;"/>'+
+                        '<h3 class="text-center mt-2">'+product.title.substring(0,20)+'</h3>'+
+                        '<p class="text-center" style="font-size: 20px;">'+
+                          'Price :'+ priceString+
+                        '</p>'+
+                        '<h3 style="cursor:pointer;" class="text-center mt-2 mb-3 text-primary">View description</h3>'+
+                        '<div class="text-center">'+
+                           
+                        '</div>'+
+                       '</div>'+
+                    '</div>';
+         }
+         document.getElementById("product-display").innerHTML = productView;
+      }
+     }
+   }
+</script>

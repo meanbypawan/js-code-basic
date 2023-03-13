@@ -30,6 +30,21 @@ export default class Product{
             });
         });
     }
+    static getProductByCategory(categoryName){
+      return new Promise((resolve,reject)=>{
+          pool.getConnection((err,con)=>{
+              if(!err){
+                let sql = "select * from product where category = ?";
+                con.query(sql,[categoryName],(err,result)=>{
+                  err ? reject(err) : resolve(result);
+                  con.release();
+                })
+              }
+              else
+                reject(err);
+          });
+      });
+  }
     static findById(id){
         return new Promise((resolve,reject)=>{
             pool.getConnection((err,con)=>{
@@ -45,4 +60,19 @@ export default class Product{
             });
         });
     }
-}
+   static getProductByKeyword(keyword){
+    return new Promise((resolve,reject)=>{
+      pool.getConnection((err,con)=>{
+          if(!err){
+            let sql = "select * from product where title like ? or description like ?";
+            con.query(sql,["%"+keyword+"%", "%"+keyword+"%"],(err,result)=>{
+              err ? reject(err) : resolve(result);
+              con.release();
+            })
+          }
+          else
+            reject(err);
+      });
+  });
+   }
+  }

@@ -10,4 +10,5 @@ router.get("/signup",signupPage);
 router.post("/signup",signup);
 router.post("/signin",signin);
 router.get("/signout",verify,signout);
+
 export default router;

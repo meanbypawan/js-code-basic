@@ -52,4 +52,39 @@ export default class Cart{
         })       
       })
     }
+    static deleteFromCart(productId, userId){
+      return new Promise((resolve,reject)=>{
+        pool.getConnection((err,con)=>{
+          if(!err){
+            let sql = "delete from cart where productId=? and userId=?";
+            con.query(sql,[productId,userId],(err,result)=>{
+              err ? reject(err) : resolve(result);
+              con.release();
+            })
+          }
+          else
+           reject(err);
+        })
+      });
+    }
+    static clearCart(userId){
+      return new Promise((resolve,reject)=>{
+        pool.getConnection((err,con)=>{
+          if(!err){
+            let sql = "delete from cart where  userId=?";
+            con.query(sql,[userId],(err,result)=>{
+              err ? reject(err) : resolve(result);
+              con.release();
+            })
+          }
+          else
+           reject(err);
+        })
+      });
+    }
 }
+
+
+
+
+

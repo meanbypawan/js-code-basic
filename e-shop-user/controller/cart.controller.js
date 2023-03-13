@@ -39,3 +39,14 @@ export const loadCart = (request,response,next)=>{
      })
     .catch(err=>console.log(err));      
 }
+export const remove = (request,response,next)=>{
+   let productId = request.params.productId;
+   let userId = request.session.user.id;
+   Cart.deleteFromCart(productId, userId)
+   .then(result=>{
+      return response.redirect("/cart/view-cart");     
+   })
+   .catch(err=>{
+    console.log(err);
+   });     
+}

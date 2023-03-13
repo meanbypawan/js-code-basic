@@ -93,7 +93,7 @@
                                             <%=item.price%>
                                         </div>
                                         <div class="col-md-2 text-center">
-                                            <a href="#"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></a>
+                                            <a href="/cart/delete/<%=item.id%>" onclick="return confirm('Are you sure ?')"><i class="fa fa-trash-o text-danger" aria-hidden="true"></i></a>
                                         </div>
                                     </div>
 

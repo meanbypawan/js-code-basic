@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <%- include('__externallink.ejs')%>
+   </head>
+   <!-- body -->
+   <body class="main-layout">
+      <%-include('__header.ejs')%>
+     
+          <div class="container-fluid">
+            <div class="row mt-3">
+               <div class="col-md-2" style="background-color:#183661;">
+                 <%categoryList.map((category,index)=>{%>
+                   <a href="/product/<%=category.categoryName%>"> 
+                    <p  class="font-weight-bold ml-1 p-1 text-white"><%=category.categoryName.toUpperCase()%></p>
+                   </a>
+                   <hr/>
+                 <%})%> 
+               </div>
+               <div class="col-md-10">
+                <div class="row" id="product-display">
+                    <%productList.map((product,index)=>{%>
+                    <div style="height: 450px;" class="col-md-3 p-3">
+                      <div style=" box-shadow: 5px 5px 5px;">
+                        <img src="<%=product.thumbnail%>" style="width:100%; height: 200px;"/>
+                        <h3 class="text-center mt-2"><%=product.title.substring(0,20)%></h3>
+                        <p class="text-center" style="font-size: 20px;">
+                          Price
+                          <%if(product.discountPercentage){%>
+                           <del class="text-danger"><%=product.price%></del>
+                           <span class="text-success"><%=Math.round(product.price-((product.price*product.discountPercentage)/100))%> Rs.</span>
+                          <%}else{%>
+                             <span class="text-success"><%=product.price%> Rs.</span>
+                          <%}%>     
+                        </p>
+                        <h3 style="cursor:pointer;" class="text-center mt-2 mb-3 text-primary">View description</h3>
+                        <div class="text-center">
+                        <%if(currentUser){%>  
+                        <a onclick="addInToCart('<%=currentUser.id*1+1543%>','<%=product.id*1 + 2567%>')">
+                          <button style="width:80%;" class="btn btn-outline-warning mb-3">Add To Cart</button>
+                        </a>
+                        <%}else{%>
+                          <a href="/cart/add-to-cart/''/''">
+                             <button style="width:80%;" class="btn btn-outline-warning mb-3">Add To Cart</button>
+                           </a>
+                          <%}%>  
+                       </div>
+                       </div>
+                    </div>
+                    <%})%>
+                 </div> 
+               </div>
+            </div>
+          </div>
+      
+      <%-include('__footer.ejs')%>
+      
+      <%-include('__externalscriptlink.ejs')%>
+      <script>
+         function addInToCart(userId, productId){
+           var xhttp = new XMLHttpRequest();
+           xhttp.open("GET","/cart/add-to-cart/"+userId+"/"+productId,true);
+           xhttp.send();
+           xhttp.onreadystatechange = function(){
+             if(xhttp.readyState == 4){
+               let data = JSON.parse(xhttp.responseText);
+               window.alert(data.message);
+             }
+           }
+         }
+      </script>
+   </body>
+</html>
+
