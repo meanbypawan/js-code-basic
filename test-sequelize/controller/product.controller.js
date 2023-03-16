@@ -16,7 +16,6 @@ export const list = (request,response,next)=>{
     }).catch(err=>{
         return response.status(500).json({error: "Internal Server Error", status: false});
     })
-    
 }
 
 export const getProductById = (request,response,next)=>{
