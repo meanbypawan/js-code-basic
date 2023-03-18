@@ -1,7 +1,6 @@
 import User from "../model/user.model.js"
 import { validationResult } from "express-validator";
 import bcrypt from "bcryptjs";
-
 export const signin = async (request, response, next) => {
     try {
         let user = await User.findOne({raw: true,
