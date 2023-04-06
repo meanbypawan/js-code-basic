@@ -1,0 +1,242 @@
+show list of database
+  show dbs
+2. Creating database
+  use database_name  
+
+3. db.createCollection('employee')  
+4. Inserting Rec/Document
+employee(name,salary,skill,gender)
+db.employee.insert({
+  name: "Cheeku",
+  salary: 50000,
+  skill: "java",
+  gender: "Male"
+});
+
+4. Bulk Record
+db.employee.insertMany([{
+   name: 'Peeku',
+   salary: 980000,
+   skill: 'java',
+   gender: 'Male'
+},{
+   name: 'Rahil',
+   salary: 890000,
+   skill: 'reactjs',
+   gender: 'Male'
+},{
+   name: 'Sahil',
+   salary: 150000,
+   skill: 'java',
+   gender: 'Male'
+},
+{
+   name: 'Leesha',
+   salary: 25000,
+   skill: 'html',
+   gender: 'Female'
+},{
+   name: 'Neesha',
+   salary: 250000,
+   skill: 'full stack',
+   gender: 'Female'
+}]);
+--------------------------------
+select
+// select * from employee
+db.employee.find();
+
+select name,salary,skill from employee
+// projection
+db.employee.find({},{name:1,salary:1,skill:1,_id:0})
+------------------------------------
+// Fetch all the employee
+// record whose skill is java
+select * from employee where skill = 'java'
+db.employee.find({skill: 'java'})
+
+// Fetch all the emmployee record
+// whose salary is greater then 70000
+select * from employee where salary>70000
+> ---> $gt
+< --->$lt
+>= --> $gte
+<= ---> $lte
+=  --->$eq
+!= ---> $ne
+db.employee.find({salary:{$gt:70000}})
+db.employee.find({salary:{$eq:150000}})
+db.employee.find({salary:{$ne:150000}})
+db.employee.find({skill: 'java'})
+
+select * from employee where
+ skill = 'java' and salary >=70000
+ 
+db.employee.find({skill: 'java',salary:{$gte:70000}}) 
+
+db.employee.find({
+  $and:[{skill: 'java',salary:{$gt:70000}}]
+});
+
+db.employee.find({
+  $or:[
+  {skill: 'java'},
+  {salary:{$gt:70000}}]
+})
+--------------------------------------
+sort:-
+select * from employee order by salary;
+db.employee.find().sort({salary:1})
+db.employee.find().sort({salary:-1})
+db.employee.find().sort({name: 1})
+
+select * from employee order by salary desc limit 3
+
+db.employee.find().sort({salary:-1}).limit(3)
+-------------------------------------------------
+
+db.employee.find().sort({salary:-1}).toArray()[0].salary
+
+db.employee.find({
+  salary: db.employee.find().sort({salary:-1}).toArray()[0].salary
+})
+
+
+
+---------------------------------------------------------------
+
+db.employee.find({
+  salary : db.employee.find({
+      salary:{$lt:db.employee.find().sort({salary:-1}).toArray()[0].salary} 
+  }).sort({salary:-1}).toArray()[0].salary
+})
+
+db.employee.find({
+  salary:{$lt:db.employee.find().sort({salary:-1}).toArray()[0].salary} 
+}).sort({salary:-1}).toArray()[0].salary
+--------------------------------------------------------------------------
+aggregate  pipeline
+
+db.employee.aggregate()
+
+db.employee.aggregate([
+ {$match:{skill: 'java'}}
+])
+db.employee.aggregate([
+ {$match:{skill: 'java'}},
+ {
+   $project:{
+     name: 1,
+     salary: 1,
+     skill: 1,
+     _id: 0
+   }
+ }
+])
+
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("642e5dbbd4b9d391a15c7cd6"),
+    '1': ObjectId("642e5dbbd4b9d391a15c7cd7"),
+    '2': ObjectId("642e5dbbd4b9d391a15c7cd8")
+  }
+}
+--------------------------------------------------------------------------
+db.teams.insertMany([
+  {teamId: 1000,teamName: 'Java Team', floor: '1st floor, section A'},
+  {teamId: 1001,teamName: 'React Team', floor: '1st floor, section B'},
+  {teamId: 1002,teamName: 'Other', floor:'2nd floor, section A'}
+])
+
+db.employee.update({
+   $and:[{skill: {$ne:'java'}},{skill:{$ne:'reactjs'}}]
+},{
+  $set:{employeeTeamId: 1002} 
+},{multi: true})
+
+------------------------------------------------------------------------
+How to maintain relation in mongodb
+
+  1. Embedded Document
+     {
+       name: 'vijay',
+       skill: 'Java',
+       team:{
+          teamName: 'Java Team',
+          floor: '1st floor, section A'
+       }
+     }
+     
+     user-collection
+     {
+        _id: 10001,
+        name: 'Mausam'
+     }
+     
+     order
+     {
+       _id: riofdfdkfkdjhfkjdhfkdh,
+       userId: 10001,
+       OrderItem:{
+          products: [{},{},{},{},{}]
+       }
+     }
+  
+  2. Referencing
+
+ // localField, foreignField, from, as
+ db.employee.aggregate([
+   {
+     $lookup:{
+       localField: 'employeeTeamId',
+       foreignField: 'teamId',
+       from: 'teams',
+       as: 'teamInfo'
+     }
+   },
+   {
+     $match:{salary: {$gte: 70000}}
+   },
+   {
+     $project:{
+       name: 1,
+       salary: 1,
+       teamInfo: 1,
+       _id: 0
+     }
+   }
+ ])
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
