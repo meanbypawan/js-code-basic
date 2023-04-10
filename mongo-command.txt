@@ -207,7 +207,24 @@ How to maintain relation in mongodb
      }
    }
  ])
-
+------------------------------------------------------------------
+db.employee.aggregate([
+  {
+    $group:{_id: null, maxSalary:{$max: "$salary"}}
+  }
+]) 
+ 
+db.employee.aggregate([
+  {
+    $group:{_id: "$gender", total:{$sum: 1}}
+  }
+]) 
+-----------------------------------------
+JS-Application + MongoDB
+  1. MongoDB Client
+  2. Mongoose (ODM---Object Document Mapper)
+      |--- db
+      |--- Schema Model
  
 
 
