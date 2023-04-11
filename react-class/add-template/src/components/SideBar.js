@@ -50,6 +50,12 @@ class SideBar extends Component{
                      Student List
                    </Link>
                 </li>
+                <li class="tm-nav-item">
+                   <Link to="/registration" class="tm-nav-link">
+                     <i class="fas fa-pen"></i>
+                     Registration 
+                   </Link>
+                </li>
               </ul>
             </nav>
             <div class="tm-mb-65">

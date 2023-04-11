@@ -11,6 +11,7 @@ import Contact from './components/Contact';
 import CounterDemo from './components/CounterDemo';
 import EvenOddCounter from './components/EvenOddCounter';
 import StudentList from './components/StudentList';
+import Registration from './components/Registration';
 class App extends Component{
   render(){
   return <div>
@@ -25,6 +26,7 @@ class App extends Component{
           <Route path='/counter' element={<CounterDemo/>}/>
           <Route path='/evenodd' element={<EvenOddCounter/>}/>
           <Route path='/student-list' element={<StudentList/>}/>
+          <Route path='/registration' element={<Registration/>}/>
         </Routes>
         <Footer/>
       </main>
