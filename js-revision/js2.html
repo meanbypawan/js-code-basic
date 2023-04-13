@@ -1,0 +1,42 @@
+<script>
+    // Scope Chaining.....
+    function f1(){
+        console.log("In f1 : "+x);
+        function f2(){
+            console.log("In f2 : "+x);
+            function f3(){
+                console.log("In f3 : "+x);
+            }
+            f3();
+        }
+        f2();
+    }
+    var x = 1000;
+    f1();
+    /*
+     CALL STACK:
+     --------------------------------------------------------------
+        f3:-- Seprate Execution Context
+              a. Memory Component
+              b. Code Component
+              c. reference :- Lexical Enviornment of f2(3000)
+        
+        f2:-- Sperate Execution Context
+            a. Memory Component (3000)
+            b. Code Component
+            c. reference :- Lexical Enviornment of f1 : 2000
+
+        f1:-- Sperate Execution Context
+            a. Memory Component (2000)
+            b. Code Component
+            c. reference :- Lexical Enviornment of GEC : 1000
+
+     1. Global Execution Context
+            a. Memory Component (1000)
+               x : 1000
+            b. Code Component
+            c. Lexical Enviornment 
+            reference=lexical Enviornment of it's parent
+
+    */
+</script>
