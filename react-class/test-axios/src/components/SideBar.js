@@ -26,6 +26,12 @@ class SideBar extends Component{
                     Categories
                 </Link>
                 </li>
+                <li class="tm-nav-item active">
+                 <Link to="/product" class="tm-nav-link">
+                  <i class="fas fa-home"></i>
+                    Products
+                </Link>
+                </li>
               </ul>
             </nav>
             <div class="tm-mb-65">

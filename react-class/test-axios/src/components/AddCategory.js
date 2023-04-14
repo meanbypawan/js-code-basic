@@ -1,16 +1,20 @@
 import axios from "axios";
 import { useState } from "react";
 
-function AddCategory(){
+function AddCategory({categories,setCategories}){
+    // props: {categoryList: [{},{}], updateCategoryState: setCategories()}
     const [category,setCategory] = useState("");
     const saveCategory = async (event)=>{
       event.preventDefault();  
       try{  
        let response = await axios.post("http://localhost:3000/category/create",{categoryName: category});
-       if(response.data.status)
+       if(response.data.status){
          window.alert("Category Saved....");
+         setCategories([...categories,response.data.category]);
+       }
       }
       catch(err){
+        console.log(err);
         window.alert("Something went wrong....");
       }
     }
