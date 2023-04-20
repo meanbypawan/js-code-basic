@@ -1,5 +1,15 @@
 import { Product } from "../model/product.model.js"
 
+export const recentProduct = (request,response,next)=>{
+    console.log("CAlled..........");
+    Product.find().limit(8).
+    then(result=>{
+        return response.status(200).json({products: result, status: true});
+    }).catch(err=>{
+        console.log(err);
+        return response.status(500).json({error:"Internal Server Error", status: false});
+    });
+} 
 export const getProductsByCategory = (request,response,next)=>{
     Product.find({category:request.params.categoryName}).
     then(result=>{

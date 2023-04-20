@@ -1,6 +1,6 @@
 import { Cart } from "../model/cart.model.js";
 export const fetchCart = async (request,response,next)=>{
-    Cart.find({userId: request.params.userId})
+    Cart.find({userId: request.body.userId})
     .populate("cartItems.productId").then(result=>{
         return response.status(200).json(result);
     }).catch(err=>{

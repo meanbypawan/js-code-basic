@@ -1,11 +1,12 @@
 import { validationResult } from "express-validator"
 import { User } from "../model/user.model.js";
 import bcrypt from "bcryptjs";
+import jwt from 'jsonwebtoken';
 export const signIn = async (request,response,next)=>{
   try{
     let user = await User.findOne({email: request.body.email});
     let status = user ? await bcrypt.compare(request.body.password,user.password): false;
-    return status ? response.status(200).json({message: 'Signin Success', status: true, user: {...user.toObject(),password: undefined}}) :
+    return status ? response.status(200).json({message: 'Signin Success', status: true, user: {...user.toObject(),password: undefined,token: generateToken(user._id)}}) :
              response.status(401).json({message: 'Unauthorized user', status: false});
   }
   catch(err){
@@ -27,4 +28,9 @@ export const signUp = async (request,response,next)=>{
   catch(err){
     return response.status(500).json({error: "Internal Server Error", status: false});
   }
+}
+
+const generateToken = (id)=>{
+   let payload = {subject: id};
+   return jwt.sign(payload,'dfsdfrrererxvvvcxvrererere');
 }
