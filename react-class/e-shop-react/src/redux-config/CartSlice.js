@@ -8,7 +8,8 @@ export const fetchCart = createAsyncThunk("cart/fetchCart", async (userId)=>{
 
 export const addItemInToCart  = createAsyncThunk("cart/addItemInToCart",async(obj)=>{
   let response = await axios.post(apiEndPoint.ADD_TO_CART,{userId: obj.userId, productId: obj.productId});
-  return response.data;
+  if(response.data.status)
+    return response.data;
 });
 const slice = createSlice({
     name: 'cart',
@@ -17,13 +18,16 @@ const slice = createSlice({
         cartError: null,
         flag: false
     },
+    reducers:{
+        updateCartItems: (state,action)=>{
+          state.cartItems = [...state.cartItems,{productId:action.payload}]; 
+        }
+    },
     extraReducers: (builder)=>{
         builder.addCase(fetchCart.fulfilled,(state,action)=>{
             state.cartItems = action.payload;
         }).addCase(fetchCart.rejected,(state)=>{
             state.cartError = "Oops! somehting went wrong..";
-        }).addCase(addItemInToCart.pending,(state)=>{
-            state.flag = false;
         }).addCase(addItemInToCart.fulfilled,(state,action)=>{
             state.flag = true;
         }).addCase(addItemInToCart.rejected,(state)=>{
@@ -31,5 +35,5 @@ const slice = createSlice({
         });
     }
 });
-
+export const {updateCartItems} = slice.actions;
 export default slice.reducer;

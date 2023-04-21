@@ -1,9 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { addItemInToCart } from "../../redux-config/CartSlice";
+import { addItemInToCart, updateCartItems } from "../../redux-config/CartSlice";
 import apiEndPoint from "../../WebApi/api";
 import Header from "../header/Header";
 import Navigation from "../navigation/Navigation";
@@ -11,16 +12,18 @@ import Spinner from "../spinner/Spinner";
 
 function Shop() {
   const [productList,setProductList] = useState([]);
+  const [page,setPage] = useState(1);
   const [error, setError] = useState("");
   const [isLoading,setIsLoading]= useState(true);
   const {currentUser} = useSelector(state=>state.user);
-  const {cartItems,flag, cartError} = useSelector(state=>state.cart);
+  const {cartItems,cartError} = useSelector(state=>state.cart);
   const dispatch = useDispatch();
   const loadProducts = async()=>{
      try{
-      let response = await axios.get(apiEndPoint.PRODUCT_LIST);
+      let response = await axios.get(apiEndPoint.PRODUCT_LIST+`?page=${page}`);
       if(response.data.status){
-        setProductList(response.data.products);
+        setProductList([...productList, ...response.data.products]);
+        setPage(page+1);
         setIsLoading(false);  
       }  
      }
@@ -32,15 +35,21 @@ function Shop() {
     if(!currentUser)
       toast.warning("please login to perform this action");
     else{
-      let status =   cartItems.some((item)=>item.productId._id == product._id);
+      let status = true;
+       if(cartItems.length!=0)      
+        status = cartItems.some((item)=>item.productId._id == product._id);
+      else
+        status = false;
       if(status)
-        toast.info("Item is already added in cart");
+       toast.info("Item is already added in cart");
       else{
-        dispatch(addItemInToCart({userId: currentUser._id, productId:product._id}));
-        if(cartError)
-          toast.error(error);
-        else if(flag)
-          toast.success("Item successfully added in cart");
+          dispatch(addItemInToCart({userId: currentUser._id, productId:product._id}));
+          if(!cartError){
+            dispatch(updateCartItems(product));
+            toast.success("Item successfully added in cart");
+          }
+          else
+            toast.error("Oops! something went wrong..");
       }   
     } 
   }
@@ -56,7 +65,15 @@ function Shop() {
         <span className="bg-secondary pr-3">Recent Products</span>
       </h2>
       {isLoading && <Spinner/>}
-      <div className="row px-xl-5">
+      <InfiniteScroll 
+        dataLength={productList.length}
+        next={loadProducts}
+        hasMore={productList.length<100}
+        loader={<Spinner/>}
+        endMessage={<p>Data End...</p>}>
+          
+      <div className="row px-xl-5"  style={{overflow: "hidden"}}>
+      
       {!error && productList.map((product,index)=> <div key={index} className="col-lg-3 col-md-4 col-sm-6 pb-1">
         <div className="product-item bg-light mb-4">
           <div className="product-img position-relative overflow-hidden">
@@ -98,7 +115,9 @@ function Shop() {
           </div>
         </div>
       </div>)} 
+      
       </div>
+      </InfiniteScroll>
     </div>
   </>
 }

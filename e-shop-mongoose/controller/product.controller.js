@@ -27,7 +27,9 @@ export const getProduct = (request,response,next)=>{
     })
 }
 export const list = (request,response,next)=>{
-    Product.find().
+    let page = parseInt(request.query.page) || 1;
+    let perPage = 10;
+    Product.find().skip((page-1)*10).limit(10).
     then(result=>{
         return response.status(200).json({products: result, status: true});
     }).catch(err=>{
